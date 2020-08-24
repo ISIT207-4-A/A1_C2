@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <h2>JavaScript Array Object Sort</h2>
+    <button onclick="alphaNumericSort()">Sort by alphanumeric value</button>
+    <br>
+    <br>
+    <button onclick="numericSort()">Sort by numeric value</button>
+    <p id="demo"></p>
+  <script>
+    var objects = [];
+    
+    //add 1000 random objects
+    
+    var i;
+    for(i=0; i<1000; i++)
+    {
+        objects.push({'type': Math.random().toString(36).slice(2), 'year': Math.floor(Math.random() * 30) + 1990 });
+    }
+    displayObjects();
+    
+    // Sorting the objects based on the alphanumeric property
+    
+    function alphaNumericSort() {
+      objects.sort (
+        function(a, b) {
+          if (a.type === b.type) {
+            return 0;
+
+          }
+          if (typeof a.type === typeof b.type) {
+            return a.type < b.type ? -1 : 1;
+          }
+          return typeof a.type < typeof b.type ? -1 : 1;
+        });
+      displayObjects();
+    }
+    // Sorting the objects based on the numeric property
+    
+    function numericSort() {
+      objects.sort(
+      function(a, b)
+      {
+        return a.year - b.year;
+      });
+
+      displayObjects();
+    }
+    function displayObjects() {
+
+      console.log(objects[0].type);
+
+      var text = "";
+
+      for(var i=0; i<objects.length; i++) {
+          text += (i+1) + ": &nbsp" +  objects[i].type + "&nbsp" + objects[i].year + "<br><br>";
+      }
+      
+      document.getElementById("demo").innerHTML = text;
+    }
+  </script>
+  </body>
+</html>
