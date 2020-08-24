@@ -1,0 +1,68 @@
+<html>
+    <script type="text/javascript">
+    var canvas, ctx, flag = false,
+        dot_flag = false;
+		
+	var positions = [];
+
+    var lineColor = "black",
+        lineWidth = 2;
+    
+    function init() {
+        canvas = document.getElementById('drawing-canvas');
+        ctx = canvas.getContext("2d");
+    }
+	
+	function process(event)
+	{
+		if (event.button == 0)
+		{
+			posX = event.clientX;
+			posY = event.clientY;
+			positions.push(posX);
+			positions.push(posY);
+		}
+		else if (event.button == 2) draw()
+		else return;
+	}
+    
+    function draw() {
+        ctx.beginPath();
+		
+		var startX = positions[0],
+			startY = positions[1];
+		var endX = positions[positions.length-1],
+			endY = positions[positions.length];
+		
+		do 
+		{
+		var prevX = positions.shift(), 
+			prevY = positions.shift();
+		var currX = positions[0], 
+			currY = positions[1];
+		
+		drawLine(prevX, prevY, currX, currY);
+		} while (!(!Array.isArray(positions) || !positions.length));
+        
+		drawLine(endX, endY, startX, startY);
+        
+        ctx.closePath();
+    }
+	
+	function drawLine(prevX, prevY, currX, currY)
+	{
+		ctx.moveTo(prevX, prevY);
+        ctx.lineTo(currX, currY);
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = lineWidth;
+		ctx.stroke();
+	}
+    </script>
+    <body onload="init()">
+        <canvas id="drawing-canvas"
+				style="border:2px solid; width=100vh; height=100vh; display:block;"
+				onmousedown="process(event);"></canvas>
+
+        
+    </body>
+    </html>
