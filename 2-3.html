@@ -1,6 +1,6 @@
 <html>
     <script type="text/javascript">
-    var canvas, ctx, flag = false,
+    var canvas, context, flag = false,
         dot_flag = false;
 		
 	var positions = [];
@@ -10,7 +10,9 @@
     
     function init() {
         canvas = document.getElementById('drawing-canvas');
-        ctx = canvas.getContext("2d");
+        context = canvas.getContext("2d");
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
     }
 	
 	function process(event)
@@ -21,13 +23,15 @@
 			posY = event.clientY;
 			positions.push(posX);
 			positions.push(posY);
+			console.log(positions);
 		}
 		else if (event.button == 2) draw()
 		else return;
 	}
     
     function draw() {
-        ctx.beginPath();
+		context.clearRect(0, 0, canvas.width, canvas.height);
+        context.beginPath();
 		
 		var startX = positions[0],
 			startY = positions[1];
@@ -46,21 +50,21 @@
         
 		drawLine(endX, endY, startX, startY);
         
-        ctx.closePath();
+        context.closePath();
     }
 	
 	function drawLine(prevX, prevY, currX, currY)
 	{
-		ctx.moveTo(prevX, prevY);
-        ctx.lineTo(currX, currY);
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = lineWidth;
-		ctx.stroke();
+		context.moveTo(prevX, prevY);
+        context.lineTo(currX, currY);
+        context.strokeStyle = lineColor;
+        context.lineWidth = lineWidth;
+		context.stroke();
 	}
     </script>
     <body onload="init()">
         <canvas id="drawing-canvas"
-				style="border:2px solid; width=100vh; height=100vh; display:block;"
+				style="border:2px solid; display:block;"
 				onmousedown="process(event);"></canvas>
 
         
