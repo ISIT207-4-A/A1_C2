@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<body>
+<scrip src="/lib/jquery.plugin.js"></scrip>
+<scrip src="/lib/jquery.min.js"></scrip>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<p>The initial array is arraySparse[1,3,7,8,9,10,12,14,17,19]</p>
+<button onclick="AddOne()">Display the forEach function result</button>
+<br />
+<button onclick="SelectSome()">Display the filter function result</button>
+<br />
+<button onclick="ShowSum()">Display the reduce function result</button>
+<br />
+<button onclick="Total()">Display the numbers of elements in the range</button>
+<br />
+<button onclick="getAll()">Display the sum of propNum from ten objects</button>
+<br />
+<button onclick="ChooseSome()">filter some objects</button>
+<br />
+<span id="display1"></span><br />
+<span id="display2"></span><br />
+<span id="display3"></span><br />
+<span id="display4"></span><br />
+<span id="display5"></span><br />
+<span id="display6"></span><br />
+
+<textarea id="data" style="height:300px;">
+abcdefghi
+abctki
+tb21eT
+
+871
+T4285T
+
+
+ptxtxtxtxXYZuy
+ept223edt
+ba329</textarea>
+
+<br />
+<button onClick="arrayReg()">Filter</button>
+
+<br />
+Array: <span id="array"></span>
+<br />
+Holes in array: <span id="hole"></span>
+<br />
+(i) Finding strings with the size of six, starting and ending with small or capital T:
+<br /><span id="displayi"></span><br />
+(ii) Finding strings with the size between 3 and 7, in which at least an alphabetic character and a digit exists:
+<br /><span id="displayii"></span><br />
+(iii) Finding strings which have more than two repeats of tx, followed by xyz:
+<br /><span id="displayiii"></span><br />
+(1) String contains only digits:
+<br /><span id="reg01"></span><br />
+(2) String contains a positive integer or a floating point number with exactly two characters after the decimal point:
+<br /><span id="reg02"></span><br />
+(3) Contains an integer in the range 2..36 inclusive
+<br /><span id="reg03"></span><br />
+(4) Contains 11-digit string starting with a 1
+<br /><span id="reg04"></span><br />
+(5) Contain bat/cat/hat/mat/...])
+<br /><span id="reg05"></span><br />
+(6) Contain a slash-slash comment
+<br /><span id="reg06"></span><br />
+
+<script>
+const arraySparse = [1,3,7,8,9,10,12,14,17,19];
+let journal = [
+	{propNum:3,
+	 squirrel:true
+	},
+	{propNum:7,
+	 squirrel:true
+	},
+	{propNum:12,
+	 squirrel:false
+	},
+	{propNum:6,
+	 squirrel:true
+	},
+	{propNum:17,
+	 squirrel:false
+	},
+	{propNum:9,
+	 squirrel:false
+	},
+	{propNum:8,
+	 squirrel:false
+	},
+	{propNum:6,
+	 squirrel:true
+	},
+	{propNum:14,
+	 squirrel:false
+	},
+	{propNum:16,
+	 squirrel:true
+	},
+];
+function getAll(){
+	var sum = 0;
+	document.getElementById("display5").innerHTML = "";
+	sum = journal.reduce(function(s,a){
+		return s + a.propNum;
+		},0);
+	
+	document.getElementById("display5").innerHTML = "The sum of propNum is: "+sum;
+}
+function AddOne(){
+	var displaySpan = document.getElementById("display1");
+	displaySpan.innerHTML = "";
+	arraySparse.forEach((element) => {
+	element++;
+	displaySpan.innerHTML  += element+" ";
+})
+}
+function checkRange(num){
+	if(num>11&&num<18)
+	{
+		return num;
+	}
+}
+function SelectSome(){
+let filtered = arraySparse.filter(checkRange)
+	document.getElementById("display2").innerHTML = filtered;
+}
+function getSum(total,num){
+	return total + num;
+}
+function ShowSum(){
+	document.getElementById("display3").innerHTML = "The sum of all elements is "+arraySparse.reduce(getSum,0);
+}
+function selectRange(arr){
+	var all = 0;
+	for(var i = 0;i<arr.length;i++){
+	if(arr[i]>1&&arr[i]<9)
+	{
+		all++;
+	}
+	}
+	return all;
+	
+}
+function Total(){
+	document.getElementById("display4").innerHTML = "";
+	document.getElementById("display4").innerHTML = "The number of elements is: "+selectRange(arraySparse);
+}
+function ChooseSome(){
+	
+	const result = journal.filter(jn=>jn.propNum>5&&jn.propNum<14);
+	//document.getElementById("display6").innerHTML = result;
+	console.log(result);
+}
+
+
+//Part e
+
+
+function arrayReg()
+{
+	var array = $('#data').val().split('\n');
+	console.log(array);
+	
+	var i;
+	var hole=0;
+	for (i=0; i<array.length; i++){
+		if (array[i]=="") hole++;
+	}
+
+document.getElementById("hole").innerHTML=hole;
+
+var regex_i = /^t....t$/i;
+var regex_ii = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{3,7})$/;
+var regex_iii = /(tx){2,}xyz/i;
+var reg01 = /^\d+$/;
+var reg02 = /\d+(\.\d\d)?/;
+var reg03 = /[2-9]|[12]\d|3[0-6]/;
+var reg04 = /1\d{10}/;
+var reg05 = /[b-chm-pP]at/;
+var reg06 = /[^\r\n]*[\r\n]/;
+
+document.getElementById("array").innerHTML=array;
+document.getElementById("displayi").innerHTML = array.filter(val => regex_i.test(val));
+document.getElementById("displayii").innerHTML = array.filter(val => regex_ii.test(val));
+document.getElementById("displayiii").innerHTML = array.filter(val => regex_iii.test(val));
+document.getElementById("reg01").innerHTML = array.filter(val => reg01.test(val));
+document.getElementById("reg02").innerHTML = array.filter(val => reg02.test(val));
+document.getElementById("reg03").innerHTML = array.filter(val => reg03.test(val));
+document.getElementById("reg04").innerHTML = array.filter(val => reg04.test(val));
+document.getElementById("reg05").innerHTML = array.filter(val => reg05.test(val));
+document.getElementById("reg06").innerHTML = array.filter(val => reg06.test(val));
+
+
+
+};
+
+</script>
+
+
+</body>
+</html>
